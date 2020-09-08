@@ -1,4 +1,5 @@
 // flutter
+import 'package:chat_app_flutter/widgets/button_blue.dart';
 import 'package:flutter/material.dart';
 
 // widgets
@@ -13,9 +14,15 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
         backgroundColor: Color(0xffF2F2F2),
         body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Logo(), _Form(), Labels(), Terms()],
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.9,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Logo(), _Form(), Labels(), Terms()],
+              ),
+            ),
           ),
         ));
   }
@@ -48,6 +55,13 @@ class __FormState extends State<_Form> {
             keyboardType: TextInputType.text,
             textController: passCtrl,
             isPassword: true,
+          ),
+          ButtonBlue(
+            textButton: "Ingresar",
+            onPressedButton: () {
+              print(emailCtrl.text);
+              print(passCtrl.text);
+            },
           )
         ],
       ),
