@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 // flutter
 import 'package:chat_app_flutter/widgets/button_blue.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,10 @@ import 'package:chat_app_flutter/widgets/terms.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ));
     return Scaffold(
         backgroundColor: Color(0xffF2F2F2),
         body: SafeArea(
@@ -28,7 +34,7 @@ class LoginPage extends StatelessWidget {
                   Labels(
                     question: '¿No tienes una cuenta?',
                     route: 'register',
-                    textButton: 'Crea una cuenta!',
+                    textButton: 'Crea una cuenta',
                   ),
                   Terms()
                 ],
