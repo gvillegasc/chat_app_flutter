@@ -20,7 +20,18 @@ class LoginPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.9,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Logo(), _Form(), Labels(), Terms()],
+                children: [
+                  Logo(
+                    title: 'Ingreso',
+                  ),
+                  _Form(),
+                  Labels(
+                    question: '¿No tienes una cuenta?',
+                    route: 'register',
+                    textButton: 'Crea una cuenta!',
+                  ),
+                  Terms()
+                ],
               ),
             ),
           ),

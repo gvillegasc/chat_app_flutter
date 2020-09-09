@@ -16,10 +16,14 @@ class MyApp extends StatelessWidget {
       statusBarIconBrightness: Brightness.dark, //top bar icons
     ));
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Chat App',
-      initialRoute: 'login',
-      routes: appRoutes,
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Chat App',
+        initialRoute: 'login',
+        routes: appRoutes,
+        theme: ThemeData(
+          pageTransitionsTheme: PageTransitionsTheme(builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          }),
+        ));
   }
 }
