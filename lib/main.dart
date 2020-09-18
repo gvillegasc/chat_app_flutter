@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Chat App',
-        initialRoute: 'users',
+        initialRoute: 'chat',
         routes: appRoutes,
         theme: ThemeData(
           pageTransitionsTheme: PageTransitionsTheme(builders: {
