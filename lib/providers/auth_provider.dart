@@ -65,6 +65,20 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> isLoggedIn() async {
+    final token = await this._storage.read(key: 'token');
+    final response = await authService.renewToken(token);
+    if (response.statusCode == 200) {
+      final loginResponse = loginResponseFromJson(response.body);
+      this.user = loginResponse.user;
+      this._saveToken(loginResponse.token);
+      return true;
+    } else {
+      this.logout();
+      return false;
+    }
+  }
+
   Future _saveToken(String token) async {
     return await _storage.write(key: 'token', value: token);
   }

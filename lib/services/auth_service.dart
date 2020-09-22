@@ -15,4 +15,10 @@ class AuthService {
         body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
     return resp;
   }
+
+  Future renewToken(String token) async {
+    final resp = await http.get('${Enviroment.apiUrl}/auth/renew',
+        headers: {'Content-Type': 'application/json', 'x-token': token});
+    return resp;
+  }
 }
