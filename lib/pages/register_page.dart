@@ -1,4 +1,6 @@
 // flutter
+import 'package:chat_app_flutter/helpers/show_alert.dart';
+import 'package:chat_app_flutter/providers/auth_provider.dart';
 import 'package:chat_app_flutter/widgets/button_blue.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +9,7 @@ import 'package:chat_app_flutter/widgets/custom_input.dart';
 import 'package:chat_app_flutter/widgets/labels.dart';
 import 'package:chat_app_flutter/widgets/logo.dart';
 import 'package:chat_app_flutter/widgets/terms.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
   @override
@@ -48,6 +51,7 @@ class __FormState extends State<_Form> {
   final passCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 40),
@@ -73,11 +77,18 @@ class __FormState extends State<_Form> {
             isPassword: true,
           ),
           ButtonBlue(
-            textButton: "Ingresar",
-            onPressedButton: () {
-              print(emailCtrl.text);
-              print(passCtrl.text);
-            },
+            textButton: "Crear Cuenta",
+            onPressedButton: authProvider.authenticating
+                ? null
+                : () async {
+                    final registerOk = await authProvider.register(
+                        nameCtrl.text, emailCtrl.text, passCtrl.text);
+                    if (registerOk == true) {
+                      Navigator.pushReplacementNamed(context, 'users');
+                    } else {
+                      showAlert(context, 'Invalid Register', registerOk);
+                    }
+                  },
           )
         ],
       ),

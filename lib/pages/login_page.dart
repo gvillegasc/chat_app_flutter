@@ -1,3 +1,6 @@
+import 'package:chat_app_flutter/helpers/show_alert.dart';
+import 'package:chat_app_flutter/providers/auth_provider.dart';
+import 'package:chat_app_flutter/services/auth_service.dart';
 import 'package:flutter/services.dart';
 
 // flutter
@@ -9,6 +12,9 @@ import 'package:chat_app_flutter/widgets/custom_input.dart';
 import 'package:chat_app_flutter/widgets/labels.dart';
 import 'package:chat_app_flutter/widgets/logo.dart';
 import 'package:chat_app_flutter/widgets/terms.dart';
+import 'package:provider/provider.dart';
+
+final authService = AuthService();
 
 class LoginPage extends StatelessWidget {
   @override
@@ -55,6 +61,7 @@ class __FormState extends State<_Form> {
   final passCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 40),
@@ -75,10 +82,20 @@ class __FormState extends State<_Form> {
           ),
           ButtonBlue(
             textButton: "Ingresar",
-            onPressedButton: () {
-              print(emailCtrl.text);
-              print(passCtrl.text);
-            },
+            onPressedButton: authProvider.authenticating
+                ? null
+                : () async {
+                    FocusScope.of(context).unfocus();
+                    final isOk = await authProvider.login(
+                        emailCtrl.text.trim(), passCtrl.text.trim());
+
+                    if (isOk) {
+                      Navigator.pushReplacementNamed(context, 'users');
+                    } else {
+                      showAlert(
+                          context, "Invalid login", "Credentials are invalid");
+                    }
+                  },
           )
         ],
       ),
