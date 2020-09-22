@@ -1,4 +1,6 @@
+import 'package:chat_app_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:chat_app_flutter/models/user_model.dart';
 
@@ -20,18 +22,23 @@ class _UsersPageState extends State<UsersPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final user = authProvider.user;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Mi nombre",
+          user.name,
           style: TextStyle(color: Colors.black87),
         ),
         brightness: Brightness.light,
         backgroundColor: Colors.white,
         elevation: 1,
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              authProvider.logout();
+              Navigator.pushReplacementNamed(context, 'login');
+            },
             icon: Icon(Icons.exit_to_app, color: Colors.black87)),
         actions: [
           Container(
