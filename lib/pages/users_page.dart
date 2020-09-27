@@ -1,4 +1,5 @@
 import 'package:chat_app_flutter/providers/auth_provider.dart';
+import 'package:chat_app_flutter/providers/socket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -23,6 +24,7 @@ class _UsersPageState extends State<UsersPage> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final socketProvider = Provider.of<SocketProvider>(context);
     final user = authProvider.user;
     return Scaffold(
       appBar: AppBar(
@@ -37,6 +39,7 @@ class _UsersPageState extends State<UsersPage> {
         leading: IconButton(
             onPressed: () {
               authProvider.logout();
+              socketProvider.disconnectSocket();
               Navigator.pushReplacementNamed(context, 'login');
             },
             icon: Icon(Icons.exit_to_app, color: Colors.black87)),

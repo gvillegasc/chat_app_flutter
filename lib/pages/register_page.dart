@@ -1,6 +1,7 @@
 // flutter
 import 'package:chat_app_flutter/helpers/show_alert.dart';
 import 'package:chat_app_flutter/providers/auth_provider.dart';
+import 'package:chat_app_flutter/providers/socket_provider.dart';
 import 'package:chat_app_flutter/widgets/button_blue.dart';
 import 'package:flutter/material.dart';
 
@@ -52,6 +53,7 @@ class __FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final socketProvider = Provider.of<SocketProvider>(context);
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 40),
@@ -84,6 +86,7 @@ class __FormState extends State<_Form> {
                     final registerOk = await authProvider.register(
                         nameCtrl.text, emailCtrl.text, passCtrl.text);
                     if (registerOk == true) {
+                      socketProvider.connectSocket();
                       Navigator.pushReplacementNamed(context, 'users');
                     } else {
                       showAlert(context, 'Invalid Register', registerOk);

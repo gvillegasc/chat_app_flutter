@@ -1,5 +1,6 @@
 import 'package:chat_app_flutter/helpers/show_alert.dart';
 import 'package:chat_app_flutter/providers/auth_provider.dart';
+import 'package:chat_app_flutter/providers/socket_provider.dart';
 import 'package:chat_app_flutter/services/auth_service.dart';
 import 'package:flutter/services.dart';
 
@@ -62,6 +63,7 @@ class __FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final socketProvider = Provider.of<SocketProvider>(context);
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 40),
@@ -90,6 +92,7 @@ class __FormState extends State<_Form> {
                         emailCtrl.text.trim(), passCtrl.text.trim());
 
                     if (isOk) {
+                      socketProvider.connectSocket();
                       Navigator.pushReplacementNamed(context, 'users');
                     } else {
                       showAlert(
