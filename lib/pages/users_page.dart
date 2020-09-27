@@ -1,5 +1,6 @@
 import 'package:chat_app_flutter/providers/auth_provider.dart';
 import 'package:chat_app_flutter/providers/socket_provider.dart';
+import 'package:chat_app_flutter/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -11,15 +12,15 @@ class UsersPage extends StatefulWidget {
 }
 
 class _UsersPageState extends State<UsersPage> {
+  final userService = UserService();
+  List<UserModel> users = [];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  final users = [
-    UserModel(uid: '1', name: 'Maria', online: true, email: 'maria@test.com'),
-    UserModel(uid: '2', name: 'Jose', online: false, email: 'jose@test.com'),
-    UserModel(uid: '3', name: 'Alessa', online: true, email: 'alessa@test.com'),
-    UserModel(
-        uid: '4', name: 'Damian', online: false, email: 'damian@test.com'),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    this._loadUsers();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +47,11 @@ class _UsersPageState extends State<UsersPage> {
         actions: [
           Container(
             margin: EdgeInsets.only(right: 10),
-            // child: Icon(Icons.check_circle, color: Colors.blue[400]),
-            child: Icon(Icons.offline_bolt, color: Colors.red),
+
+            // child: ,
+            child: (socketProvider.serverStatus == ServerStatus.Online)
+                ? Icon(Icons.wifi_tethering, color: Colors.green)
+                : Icon(Icons.portable_wifi_off, color: Colors.red),
           )
         ],
       ),
@@ -88,7 +92,9 @@ class _UsersPageState extends State<UsersPage> {
   }
 
   _loadUsers() async {
-    await Future.delayed(Duration(milliseconds: 1000));
+    this.users = await userService.getUsers();
+    setState(() {});
+    // await Future.delayed(Duration(milliseconds: 1000));
     _refreshController.refreshCompleted();
   }
 }

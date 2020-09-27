@@ -20,6 +20,7 @@ class AuthProvider with ChangeNotifier {
   static Future<String> getToken() async {
     final _storage = new FlutterSecureStorage();
     final token = await _storage.read(key: 'token');
+
     return token;
   }
 
@@ -42,7 +43,7 @@ class AuthProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       final loginResponse = loginResponseFromJson(response.body);
       this.user = loginResponse.user;
-      this._saveToken(loginResponse.token);
+      await this._saveToken(loginResponse.token);
       return true;
     } else {
       return false;
@@ -57,7 +58,7 @@ class AuthProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       final loginResponse = loginResponseFromJson(response.body);
       this.user = loginResponse.user;
-      this._saveToken(loginResponse.token);
+      await this._saveToken(loginResponse.token);
       return true;
     } else {
       final respBody = jsonDecode(response.body);
@@ -71,7 +72,7 @@ class AuthProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       final loginResponse = loginResponseFromJson(response.body);
       this.user = loginResponse.user;
-      this._saveToken(loginResponse.token);
+      await this._saveToken(loginResponse.token);
       return true;
     } else {
       this.logout();
