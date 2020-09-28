@@ -1,4 +1,5 @@
 import 'package:chat_app_flutter/providers/auth_provider.dart';
+import 'package:chat_app_flutter/providers/chat_provider.dart';
 import 'package:chat_app_flutter/providers/socket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app_flutter/routes/routes.dart';
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => SocketProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ChatProvider(),
         )
       ],
       child: MaterialApp(

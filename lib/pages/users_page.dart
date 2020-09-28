@@ -1,4 +1,5 @@
 import 'package:chat_app_flutter/providers/auth_provider.dart';
+import 'package:chat_app_flutter/providers/chat_provider.dart';
 import 'package:chat_app_flutter/providers/socket_provider.dart';
 import 'package:chat_app_flutter/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +89,11 @@ class _UsersPageState extends State<UsersPage> {
             color: user.online ? Colors.green : Colors.red,
             borderRadius: BorderRadius.circular(100)),
       ),
+      onTap: () {
+        final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+        chatProvider.userFrom = user;
+        Navigator.pushNamed(context, 'chat');
+      },
     );
   }
 
