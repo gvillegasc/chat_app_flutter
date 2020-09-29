@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:chat_app_flutter/providers/auth_provider.dart';
 import 'package:chat_app_flutter/providers/chat_provider.dart';
+import 'package:chat_app_flutter/providers/socket_provider.dart';
 import 'package:chat_app_flutter/widgets/chat_message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +17,37 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final TextEditingController _textController = new TextEditingController();
   final _focusNode = new FocusNode();
 
-  List<ChatMessage> _messages = [];
+  ChatProvider chatProvider;
+  SocketProvider socketProvider;
+  AuthProvider authProvider;
 
+  List<ChatMessage> _messages = [];
   bool _isWriting = false;
 
   @override
+  void initState() {
+    super.initState();
+    this.chatProvider = Provider.of<ChatProvider>(context, listen: false);
+    this.socketProvider = Provider.of<SocketProvider>(context, listen: false);
+    this.authProvider = Provider.of<AuthProvider>(context, listen: false);
+    this.socketProvider.socket.on('personal-message', _listenMessage);
+  }
+
+  void _listenMessage(dynamic payload) {
+    ChatMessage message = new ChatMessage(
+        text: payload['message'],
+        uid: payload['uid'],
+        animationController: AnimationController(
+            vsync: this, duration: Duration(milliseconds: 200)));
+
+    setState(() {
+      _messages.insert(0, message);
+    });
+    message.animationController.forward();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final chatProvider = Provider.of<ChatProvider>(context);
     final userFrom = chatProvider.userFrom;
     return Scaffold(
       appBar: AppBar(
@@ -86,7 +112,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
               child: TextField(
                 controller: _textController,
                 textInputAction: TextInputAction.send,
-                onSubmitted: _handleSubmit,
+                onEditingComplete: () => _handleSubmit(_textController.text),
+                // onSubmitted: _handleSubmit,
                 onChanged: (String text) {
                   setState(() {
                     if (text.trim().length > 0) {
@@ -133,16 +160,16 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     );
   }
 
+  // _asd() {
+  //   _textController.clear();
+  //   FocusScope.of(context).requestFocus(_focusNode);
+  // }
+
   _handleSubmit(String texto) {
     if (texto.length == 0) return;
-    // _textController.clear();
 
-    print(_textController.text);
-    // _textController.clearComposing();
-    this._textController.clear();
-
+    _textController.clear();
     _focusNode.requestFocus();
-    // _textController.text = "";
 
     _isWriting = false;
 
@@ -158,6 +185,12 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     setState(() {
       _isWriting = false;
     });
+
+    this.socketProvider.emit('personal-message', {
+      'by': this.authProvider.user.uid,
+      'from': this.chatProvider.userFrom.uid,
+      'message': texto
+    });
   }
 
   @override
@@ -165,6 +198,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     for (ChatMessage message in _messages) {
       message.animationController.dispose();
     }
+    this.socketProvider.socket.off('personal-message');
+
     super.dispose();
   }
 }
