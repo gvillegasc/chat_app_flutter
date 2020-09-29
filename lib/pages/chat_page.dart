@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:chat_app_flutter/models/message_response.dart';
 import 'package:chat_app_flutter/providers/auth_provider.dart';
 import 'package:chat_app_flutter/providers/chat_provider.dart';
 import 'package:chat_app_flutter/providers/socket_provider.dart';
+import 'package:chat_app_flutter/services/chat_service.dart';
 import 'package:chat_app_flutter/widgets/chat_message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final TextEditingController _textController = new TextEditingController();
   final _focusNode = new FocusNode();
+  final chatService = ChatService();
 
   ChatProvider chatProvider;
   SocketProvider socketProvider;
@@ -31,6 +34,22 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     this.socketProvider = Provider.of<SocketProvider>(context, listen: false);
     this.authProvider = Provider.of<AuthProvider>(context, listen: false);
     this.socketProvider.socket.on('personal-message', _listenMessage);
+    _loadHistory(this.chatProvider.userFrom.uid);
+  }
+
+  void _loadHistory(String userId) async {
+    List<Message> chat = await this.chatService.getChat(userId);
+    final history = chat.map((m) => ChatMessage(
+          text: m.message,
+          uid: m.by,
+          animationController: AnimationController(
+              vsync: this, duration: Duration(milliseconds: 0))
+            ..forward(),
+        ));
+
+    setState(() {
+      _messages.insertAll(0, history);
+    });
   }
 
   void _listenMessage(dynamic payload) {
@@ -174,7 +193,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     _isWriting = false;
 
     final newMessage = new ChatMessage(
-      uid: '123123',
+      uid: authProvider.user.uid,
       text: texto,
       animationController: AnimationController(
           vsync: this, duration: Duration(milliseconds: 200)),
