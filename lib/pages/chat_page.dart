@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_app_flutter/global/colors_app.dart';
 import 'package:chat_app_flutter/models/message_response.dart';
 import 'package:chat_app_flutter/providers/auth_provider.dart';
 import 'package:chat_app_flutter/providers/chat_provider.dart';
@@ -70,22 +71,22 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     final userFrom = chatProvider.userFrom;
     return Scaffold(
       appBar: AppBar(
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
+        // brightness: Brightness.light,
+        backgroundColor: ColorsApp.primaryColor,
         centerTitle: true,
         leading: IconButton(
           icon: Icon(CupertinoIcons.back),
-          color: Colors.black,
+          color: Colors.white,
           onPressed: () => Navigator.pop(context),
         ),
         title: Column(
           children: [
             CircleAvatar(
-              backgroundColor: Colors.blue[100],
+              backgroundColor: Colors.white,
               maxRadius: 15,
               child: Text(
                 userFrom.name.substring(0, 2),
-                style: TextStyle(fontSize: 12),
+                style: TextStyle(fontSize: 12, color: ColorsApp.primaryColor),
               ),
             ),
             SizedBox(
@@ -93,7 +94,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             ),
             Text(
               userFrom.name,
-              style: TextStyle(color: Colors.black87, fontSize: 12),
+              style: TextStyle(color: Colors.white, fontSize: 12),
             )
           ],
         ),
@@ -131,6 +132,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
               child: TextField(
                 controller: _textController,
                 textInputAction: TextInputAction.send,
+                cursorColor: ColorsApp.primaryColor,
                 onEditingComplete: () => _handleSubmit(_textController.text),
                 // onSubmitted: _handleSubmit,
                 onChanged: (String text) {
@@ -160,12 +162,15 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                       margin: EdgeInsets.symmetric(horizontal: 4),
                       child: IconTheme(
                         data: IconThemeData(
-                          color: Colors.blue[400],
+                          color: ColorsApp.primaryColor,
                         ),
                         child: IconButton(
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
-                          icon: Icon(Icons.send),
+                          icon: Icon(
+                            Icons.send,
+                            color: _isWriting ? ColorsApp.primaryColor : null,
+                          ),
                           onPressed: _isWriting
                               ? () => _handleSubmit(_textController.text.trim())
                               : null,

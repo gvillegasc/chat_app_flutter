@@ -1,3 +1,4 @@
+import 'package:chat_app_flutter/global/colors_app.dart';
 import 'package:chat_app_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,8 @@ class ChatMessage extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         decoration: BoxDecoration(
-            color: Color(0xFF0099FF), borderRadius: BorderRadius.circular(20)),
+            color: ColorsApp.secondaryColor,
+            borderRadius: BorderRadius.circular(20)),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:chat_app_flutter/global/colors_app.dart';
 import 'package:flutter/material.dart';
 
 class ButtonBlue extends StatelessWidget {
@@ -13,7 +14,7 @@ class ButtonBlue extends StatelessWidget {
     return RaisedButton(
       elevation: 2,
       highlightElevation: 5,
-      color: Colors.blue,
+      color: ColorsApp.primaryColor,
       shape: StadiumBorder(),
       onPressed: this.onPressedButton,
       child: Container(

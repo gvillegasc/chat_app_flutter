@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_app_flutter/global/colors_app.dart';
 import 'package:chat_app_flutter/pages/login_page.dart';
 import 'package:chat_app_flutter/pages/users_page.dart';
 import 'package:chat_app_flutter/providers/auth_provider.dart';
@@ -17,7 +18,10 @@ class LoadingPage extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return Center(
             child: (Platform.isAndroid)
-                ? CircularProgressIndicator()
+                ? CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(
+                        ColorsApp.primaryColor),
+                  )
                 : CupertinoActivityIndicator(),
           );
         },

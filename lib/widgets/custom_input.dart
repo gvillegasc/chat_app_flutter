@@ -1,3 +1,4 @@
+import 'package:chat_app_flutter/global/colors_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -36,8 +37,13 @@ class CustomInput extends StatelessWidget {
         autocorrect: false,
         keyboardType: this.keyboardType,
         obscureText: this.isPassword,
+        cursorColor: ColorsApp.primaryColor,
         decoration: InputDecoration(
-            prefixIcon: Icon(this.icon),
+            focusColor: ColorsApp.primaryColor,
+            prefixIcon: Icon(
+              this.icon,
+              color: ColorsApp.primaryColor,
+            ),
             focusedBorder: InputBorder.none,
             border: InputBorder.none,
             hintText: this.placeholder),

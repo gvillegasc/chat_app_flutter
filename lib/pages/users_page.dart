@@ -1,3 +1,4 @@
+import 'package:chat_app_flutter/global/colors_app.dart';
 import 'package:chat_app_flutter/providers/auth_provider.dart';
 import 'package:chat_app_flutter/providers/chat_provider.dart';
 import 'package:chat_app_flutter/providers/socket_provider.dart';
@@ -33,10 +34,10 @@ class _UsersPageState extends State<UsersPage> {
         centerTitle: true,
         title: Text(
           user.name,
-          style: TextStyle(color: Colors.black87),
+          style: TextStyle(color: Colors.white),
         ),
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
+        // brightness: Brightness.light,
+        backgroundColor: ColorsApp.primaryColor,
         elevation: 1,
         leading: IconButton(
             onPressed: () {
@@ -44,7 +45,7 @@ class _UsersPageState extends State<UsersPage> {
               socketProvider.disconnectSocket();
               Navigator.pushReplacementNamed(context, 'login');
             },
-            icon: Icon(Icons.exit_to_app, color: Colors.black87)),
+            icon: Icon(Icons.exit_to_app, color: Colors.white)),
         actions: [
           Container(
             margin: EdgeInsets.only(right: 10),
@@ -60,6 +61,7 @@ class _UsersPageState extends State<UsersPage> {
           enablePullDown: true,
           header: WaterDropMaterialHeader(
             distance: 40,
+            backgroundColor: ColorsApp.secondaryColor,
           ),
           controller: _refreshController,
           onRefresh: _loadUsers,
@@ -80,7 +82,11 @@ class _UsersPageState extends State<UsersPage> {
       title: Text(user.name),
       subtitle: Text(user.email),
       leading: CircleAvatar(
-        child: Text(user.name.substring(0, 2)),
+        backgroundColor: ColorsApp.secondaryColor,
+        child: Text(
+          user.name.substring(0, 2),
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       trailing: Container(
         width: 10,

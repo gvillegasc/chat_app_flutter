@@ -8,12 +8,12 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: EdgeInsets.only(top: 40),
         width: 150,
         child: Column(
           children: [
             Image(
-              image: AssetImage("assets/images/tag-logo.png"),
+              image: AssetImage("assets/images/login.png"),
             ),
             SizedBox(
               height: 20,

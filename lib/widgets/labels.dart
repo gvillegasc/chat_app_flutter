@@ -1,3 +1,4 @@
+import 'package:chat_app_flutter/global/colors_app.dart';
 import 'package:flutter/material.dart';
 
 class Labels extends StatelessWidget {
@@ -32,7 +33,7 @@ class Labels extends StatelessWidget {
             },
             child: Text(this.textButton,
                 style: TextStyle(
-                    color: Colors.blue[600],
+                    color: ColorsApp.secondaryColor,
                     fontSize: 18,
                     fontWeight: FontWeight.bold)),
           ),
